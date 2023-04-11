@@ -1,4 +1,7 @@
 using FinancialManagement.DbManagement;
+using FinancialManagement.Interfaces;
+using FinancialManagement.Service;
+using FinancialManagement.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,6 +12,8 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddScoped<ITransactionService, TransactionService>();
+builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddDbContext<FinancialManagementContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("AppConnectionString")));
 
