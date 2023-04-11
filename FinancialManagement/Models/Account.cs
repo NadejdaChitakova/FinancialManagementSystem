@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
+﻿
 namespace FinancialManagement.Models
 {
     public partial class Account
