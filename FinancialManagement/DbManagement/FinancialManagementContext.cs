@@ -27,9 +27,7 @@ namespace FinancialManagement.DbManagement
             {
                 entity.ToTable("ACCOUNTS");
 
-                entity.Property(e => e.AccountId)
-                    .ValueGeneratedNever()
-                    .HasColumnName("ACCOUNT_ID");
+                entity.Property(e => e.AccountId).HasColumnName("ACCOUNT_ID");
 
                 entity.Property(e => e.Balance).HasColumnName("BALANCE");
 
@@ -49,22 +47,20 @@ namespace FinancialManagement.DbManagement
                     .WithMany(p => p.Accounts)
                     .HasForeignKey(d => d.PersonId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__ACCOUNTS__PERSON__36B12243");
+                    .HasConstraintName("FK__ACCOUNTS__PERSON__5441852A");
             });
 
             modelBuilder.Entity<Bank>(entity =>
             {
                 entity.ToTable("BANKS");
 
-                entity.HasIndex(e => e.BankPhone, "UQ__BANKS__6A1297CC1117188B")
+                entity.HasIndex(e => e.BankPhone, "UQ__BANKS__6A1297CC8AFF6687")
                     .IsUnique();
 
-                entity.HasIndex(e => e.BankName, "UQ__BANKS__AEC7A8EF835E3680")
+                entity.HasIndex(e => e.BankName, "UQ__BANKS__AEC7A8EFC5704441")
                     .IsUnique();
 
-                entity.Property(e => e.BankId)
-                    .ValueGeneratedNever()
-                    .HasColumnName("BANK_ID");
+                entity.Property(e => e.BankId).HasColumnName("BANK_ID");
 
                 entity.Property(e => e.BankAddress)
                     .HasMaxLength(100)
@@ -86,9 +82,7 @@ namespace FinancialManagement.DbManagement
             {
                 entity.ToTable("CATEGORIES");
 
-                entity.Property(e => e.CategoryId)
-                    .ValueGeneratedNever()
-                    .HasColumnName("CATEGORY_ID");
+                entity.Property(e => e.CategoryId).HasColumnName("CATEGORY_ID");
 
                 entity.Property(e => e.CategoryDescription)
                     .HasMaxLength(300)
@@ -105,9 +99,7 @@ namespace FinancialManagement.DbManagement
             {
                 entity.ToTable("LOCATIONS");
 
-                entity.Property(e => e.LocationId)
-                    .ValueGeneratedNever()
-                    .HasColumnName("LOCATION_ID");
+                entity.Property(e => e.LocationId).HasColumnName("LOCATION_ID");
 
                 entity.Property(e => e.LocationAddress)
                     .HasMaxLength(100)
@@ -128,23 +120,13 @@ namespace FinancialManagement.DbManagement
             {
                 entity.ToTable("PEOPLE");
 
-                entity.HasIndex(e => e.Email, "UQ__PEOPLE__161CF724051A7E76")
+                entity.HasIndex(e => e.Email, "UQ__PEOPLE__161CF724F359C9F0")
                     .IsUnique();
 
-                entity.HasIndex(e => e.Phone, "UQ__PEOPLE__D4FA0A26DFF8D175")
+                entity.HasIndex(e => e.Phone, "UQ__PEOPLE__D4FA0A26B69987F8")
                     .IsUnique();
 
-                entity.HasIndex(e => e.AccountNumber, "UQ__PEOPLE__ECCCDF0550539D15")
-                    .IsUnique();
-
-                entity.Property(e => e.PersonId)
-                    .ValueGeneratedNever()
-                    .HasColumnName("PERSON_ID");
-
-                entity.Property(e => e.AccountNumber)
-                    .HasMaxLength(10)
-                    .IsUnicode(false)
-                    .HasColumnName("ACCOUNT_NUMBER");
+                entity.Property(e => e.PersonId).HasColumnName("PERSON_ID");
 
                 entity.Property(e => e.Address)
                     .HasMaxLength(50)
@@ -176,9 +158,7 @@ namespace FinancialManagement.DbManagement
             {
                 entity.ToTable("TRANSACTIONS");
 
-                entity.Property(e => e.TransactionId)
-                    .ValueGeneratedNever()
-                    .HasColumnName("TRANSACTION_ID");
+                entity.Property(e => e.TransactionId).HasColumnName("TRANSACTION_ID");
 
                 entity.Property(e => e.BankId).HasColumnName("BANK_ID");
 
@@ -203,25 +183,25 @@ namespace FinancialManagement.DbManagement
                     .WithMany(p => p.Transactions)
                     .HasForeignKey(d => d.BankId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__TRANSACTI__BANK___30F848ED");
+                    .HasConstraintName("FK__TRANSACTI__BANK___4E88ABD4");
 
                 entity.HasOne(d => d.Category)
                     .WithMany(p => p.Transactions)
                     .HasForeignKey(d => d.CategoryId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__TRANSACTI__CATEG__33D4B598");
+                    .HasConstraintName("FK__TRANSACTI__CATEG__5165187F");
 
                 entity.HasOne(d => d.Location)
                     .WithMany(p => p.Transactions)
                     .HasForeignKey(d => d.LocationId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__TRANSACTI__LOCAT__31EC6D26");
+                    .HasConstraintName("FK__TRANSACTI__LOCAT__4F7CD00D");
 
                 entity.HasOne(d => d.Person)
                     .WithMany(p => p.Transactions)
                     .HasForeignKey(d => d.PersonId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__TRANSACTI__PERSO__32E0915F");
+                    .HasConstraintName("FK__TRANSACTI__PERSO__5070F446");
             });
 
             OnModelCreatingPartial(modelBuilder);

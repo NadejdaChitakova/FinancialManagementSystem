@@ -17,7 +17,6 @@ namespace FinancialManagement.Models
         public string Phone { get; set; } = null!;
         public string Address { get; set; } = null!;
         public string Email { get; set; } = null!;
-        public string AccountNumber { get; set; } = null!;
 
         public virtual ICollection<Account> Accounts { get; set; }
         public virtual ICollection<Transaction> Transactions { get; set; }
