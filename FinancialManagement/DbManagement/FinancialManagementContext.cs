@@ -14,6 +14,7 @@ namespace FinancialManagement.DbManagement
         {
         }
 
+        public virtual DbSet<Account> Accounts { get; set; } = null!;
         public virtual DbSet<Bank> Banks { get; set; } = null!;
         public virtual DbSet<Category> Categories { get; set; } = null!;
         public virtual DbSet<Location> Locations { get; set; } = null!;
@@ -22,6 +23,35 @@ namespace FinancialManagement.DbManagement
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Account>(entity =>
+            {
+                entity.ToTable("ACCOUNTS");
+
+                entity.Property(e => e.AccountId)
+                    .ValueGeneratedNever()
+                    .HasColumnName("ACCOUNT_ID");
+
+                entity.Property(e => e.Balance).HasColumnName("BALANCE");
+
+                entity.Property(e => e.Currency)
+                    .HasMaxLength(5)
+                    .IsUnicode(false)
+                    .HasColumnName("CURRENCY");
+
+                entity.Property(e => e.Iban)
+                    .HasMaxLength(15)
+                    .IsUnicode(false)
+                    .HasColumnName("IBAN");
+
+                entity.Property(e => e.PersonId).HasColumnName("PERSON_ID");
+
+                entity.HasOne(d => d.Person)
+                    .WithMany(p => p.Accounts)
+                    .HasForeignKey(d => d.PersonId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__ACCOUNTS__PERSON__36B12243");
+            });
+
             modelBuilder.Entity<Bank>(entity =>
             {
                 entity.ToTable("BANKS");

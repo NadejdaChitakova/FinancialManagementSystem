@@ -1,9 +1,13 @@
-﻿namespace FinancialManagement.Models
+﻿using System;
+using System.Collections.Generic;
+
+namespace FinancialManagement.Models
 {
     public partial class Person
     {
         public Person()
         {
+            Accounts = new HashSet<Account>();
             Transactions = new HashSet<Transaction>();
         }
 
@@ -15,6 +19,7 @@
         public string Email { get; set; } = null!;
         public string AccountNumber { get; set; } = null!;
 
+        public virtual ICollection<Account> Accounts { get; set; }
         public virtual ICollection<Transaction> Transactions { get; set; }
     }
 }
