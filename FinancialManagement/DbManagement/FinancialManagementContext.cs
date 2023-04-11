@@ -20,14 +20,6 @@ namespace FinancialManagement.DbManagement
         public virtual DbSet<Person> People { get; set; } = null!;
         public virtual DbSet<Transaction> Transactions { get; set; } = null!;
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            if (!optionsBuilder.IsConfigured)
-            {
-                optionsBuilder.UseSqlServer("Server=desktop-ceskqgb;Database=FinancialManagement;Trusted_Connection=True;");
-            }
-        }
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Bank>(entity =>
