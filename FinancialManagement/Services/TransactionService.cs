@@ -4,8 +4,6 @@ using FinancialManagement.DbManagement;
 using FinancialManagement.Entities;
 using FinancialManagement.Interfaces;
 using FinancialManagement.Models;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace FinancialManagement.Service
 {

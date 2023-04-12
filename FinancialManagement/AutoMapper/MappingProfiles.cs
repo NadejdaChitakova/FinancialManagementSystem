@@ -14,7 +14,10 @@ namespace FinancialManagement.AutoMapper
                 .ForMember(
                     dest => dest.TransactionDate,
                     opt => opt.MapFrom(src => DateTime.Now)
-                ); ;
+                );
+
+            CreateMap<Account, AccountResource>();
+            CreateMap<AccountResource, Account>();
         }
     }
 }
