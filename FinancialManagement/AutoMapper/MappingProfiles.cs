@@ -15,6 +15,8 @@ namespace FinancialManagement.AutoMapper
                     dest => dest.TransactionDate,
                     opt => opt.MapFrom(src => DateTime.Now)
                 );
+            CreateMap<TransactionsByLocationResource, Location>();
+            CreateMap<Location, TransactionsByLocationResource>();
 
             CreateMap<Account, AccountResource>();
             CreateMap<AccountResource, Account>();

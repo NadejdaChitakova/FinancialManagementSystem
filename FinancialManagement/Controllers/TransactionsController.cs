@@ -12,11 +12,20 @@ namespace FinancialManagement.Controllers
             _transactionService = transactionService;
         }
 
-        [HttpPost]
+        [HttpGet]
         [Route("Transactions/GetTransaction")]
-        public async Task<IActionResult> PostTransaction([FromHeader] int personId)
+        public async Task<IActionResult> Get([FromHeader] int personId)
         {
             var transactions = await _transactionService.GetTransactions(personId);
+
+            return Ok(transactions);
+        }
+
+        [HttpGet]
+        [Route("Transactions/GetTransactionsByLocation")]
+        public async Task<IActionResult> GetTransactionsByLocation([FromHeader] int locationId)
+        {
+            var transactions = await _transactionService.GetTransactionsByLocation(locationId);
 
             return Ok(transactions);
         }

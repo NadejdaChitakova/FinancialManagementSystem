@@ -15,5 +15,10 @@
         public virtual Category Category { get; set; } = null!;
         public virtual Location Location { get; set; } = null!;
         public virtual Person Person { get; set; } = null!;
+
+        public static implicit operator List<object>(Transaction v)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -4,6 +4,10 @@ using FinancialManagement.DbManagement;
 using FinancialManagement.Entities;
 using FinancialManagement.Interfaces;
 using FinancialManagement.Models;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Internal;
+using System.Diagnostics;
 
 namespace FinancialManagement.Service
 {
@@ -27,6 +31,19 @@ namespace FinancialManagement.Service
 
             var transactions = _financialManagementContext.Transactions.Where(x => x.PersonId.Equals(personId)).ProjectTo<TransactionResource>(_mapper.ConfigurationProvider).ToList();
             return transactions;
+        }
+
+        public async Task<TransactionsByLocationResource> GetTransactionsByLocation(int locationId)
+        {
+            if (locationId < 0)
+            {
+                throw new BadHttpRequestException("Incorrect data format.");
+            }
+
+            var location = _financialManagementContext.Locations.Where(x => x.LocationId.Equals(locationId)).FirstOrDefault();
+            var mappedResource = _mapper.Map<TransactionsByLocationResource>(location);
+            mappedResource.Transactions.AddRange(_financialManagementContext.Transactions.Where(x => x.LocationId.Equals(locationId)));
+            return mappedResource;
         }
 
         public async Task CreateTransaction(TransactionRequestResource transactionResource)
