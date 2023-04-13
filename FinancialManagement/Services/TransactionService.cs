@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using FinancialManagement.DbManagement;
 using FinancialManagement.Entities;
 using FinancialManagement.Interfaces;
 using FinancialManagement.IRepositories;
@@ -9,13 +8,11 @@ namespace FinancialManagement.Service
 {
     public class TransactionService : ITransactionService
     {
-        private readonly FinancialManagementContext _financialManagementContext;
         private readonly IMapper _mapper;
         private readonly ITransactionRepository _transactionRepository;
 
-        public TransactionService(FinancialManagementContext financialManagementContext, IMapper mapper, ITransactionRepository transactionRepository)
+        public TransactionService(IMapper mapper, ITransactionRepository transactionRepository)
         {
-            _financialManagementContext = financialManagementContext;
             _mapper = mapper;
             _transactionRepository = transactionRepository;
         }
@@ -83,7 +80,7 @@ namespace FinancialManagement.Service
                 throw new BadHttpRequestException("Incorrect data format.");
             }
 
-            var transaction = _financialManagementContext.Transactions.Where(x => x.TransactionId.Equals(x.TransactionId)).FirstOrDefault();
+            var transaction = _transactionRepository.GetTransaction(transactionId);
 
             if (transaction == null)
             {

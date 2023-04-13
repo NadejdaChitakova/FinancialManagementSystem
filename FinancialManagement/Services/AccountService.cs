@@ -2,47 +2,20 @@
 using FinancialManagement.DbManagement;
 using FinancialManagement.Entities;
 using FinancialManagement.Interfaces;
+using FinancialManagement.IRepositories;
 using FinancialManagement.Models;
-using Microsoft.EntityFrameworkCore;
 
 namespace FinancialManagement.Services
 {
     public class AccountService : IAccountService
     {
-        private readonly FinancialManagementContext _financialManagementContext;
         private readonly IMapper _mapper;
+        private readonly IAccountRepository _accountRepository;
 
-        public AccountService(FinancialManagementContext financialManagementContext, IMapper mapper)
+        public AccountService(IMapper mapper, IAccountRepository accountRepository)
         {
-            _financialManagementContext = financialManagementContext;
             _mapper = mapper;
-        }
-
-        public async Task CreateAccount(AccountResource request)
-        {
-            ValidateIBAN(request.Iban);
-
-            var mappedResource = _mapper.Map<Account>(request);
-
-            await _financialManagementContext.Accounts.AddAsync(mappedResource);
-            await _financialManagementContext.SaveChangesAsync();
-        }
-
-        public async Task DeleteAccount(int personId)
-        {
-            if (personId < 0)
-            {
-                throw new BadHttpRequestException("Incorrect data format.");
-            }
-            var account = _financialManagementContext.Accounts.AsQueryable().Where(x => x.PersonId.Equals(personId)).FirstOrDefault();
-
-            if (account == null)
-            {
-                throw new BadHttpRequestException("Account does not exist");
-            }
-
-            _financialManagementContext.Accounts.Remove(account);
-            await _financialManagementContext.SaveChangesAsync();
+            _accountRepository = accountRepository;
         }
 
         public async Task<AccountResource> GetAccount(int personId)
@@ -52,9 +25,18 @@ namespace FinancialManagement.Services
                 throw new BadHttpRequestException("Incorrect data format.");
             }
 
-            var account = await _financialManagementContext.Accounts.Where(x => x.PersonId.Equals(personId)).FirstOrDefaultAsync();
+            var account = _accountRepository.GetAccount(personId);
 
             return _mapper.Map<AccountResource>(account);
+        }
+
+        public async Task CreateAccount(AccountResource request)
+        {
+            ValidateIBAN(request.Iban);
+
+            var account = _mapper.Map<Account>(request);
+
+            await _accountRepository.CreateAccountInDb(account);
         }
 
         public async Task UpdateAccount(AccountResource request)
@@ -64,17 +46,32 @@ namespace FinancialManagement.Services
                 throw new BadHttpRequestException("Incorrect data format.");
             }
 
-            var mappedResource = _mapper.Map<Account>(request);
+            var account = _mapper.Map<Account>(request);
 
-            _financialManagementContext.Accounts.Update(mappedResource);
-            await _financialManagementContext.SaveChangesAsync();
+            await _accountRepository.UpdateAccountInDb(account);
+        }
+
+        public async Task DeleteAccount(int accountId)
+        {
+            if (accountId < 0)
+            {
+                throw new BadHttpRequestException("Incorrect data format.");
+            }
+            var account = _accountRepository.GetAccount(accountId);
+
+            if (account == null)
+            {
+                throw new BadHttpRequestException("Account does not exist");
+            }
+
+            await _accountRepository.DeleteAccountInDb(account);
         }
 
         private void ValidateIBAN(string iban)
         {
-            var ibanFromDb = _financialManagementContext.Accounts.Where(x => x.Iban.Equals(iban, StringComparison.CurrentCultureIgnoreCase)).Select(x => x.Iban);
+            var ibanFromDb = _accountRepository.GetIban(iban);
 
-            if (ibanFromDb.Any())
+            if (!string.IsNullOrEmpty(ibanFromDb))
             {
                 throw new BadHttpRequestException("Iban value already exists in database.");
             }

@@ -7,7 +7,7 @@ namespace FinancialManagement.Interfaces
         Task<AccountResource> GetAccount(int personId);
         Task CreateAccount(AccountResource request);
         Task UpdateAccount(AccountResource request);
-        Task DeleteAccount(int personId);
+        Task DeleteAccount(int accountId);
 
     }
 }

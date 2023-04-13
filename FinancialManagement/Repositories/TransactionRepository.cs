@@ -4,7 +4,6 @@ using FinancialManagement.DbManagement;
 using FinancialManagement.Entities;
 using FinancialManagement.IRepositories;
 using FinancialManagement.Models;
-using System.Runtime.CompilerServices;
 
 namespace FinancialManagement.Repository
 {
@@ -59,6 +58,11 @@ namespace FinancialManagement.Repository
         {
             _dbContext.Transactions.Remove(transaction);
             await _dbContext.SaveChangesAsync();
+        }
+
+        public Transaction? GetTransaction(int transactionId)
+        {
+            return _dbContext.Transactions.Where(x => x.TransactionId.Equals(x.TransactionId)).FirstOrDefault();
         }
     }
 }

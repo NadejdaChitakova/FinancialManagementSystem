@@ -1,4 +1,5 @@
 ﻿using FinancialManagement.Entities;
+using FinancialManagement.Models;
 
 namespace FinancialManagement.Interfaces
 {

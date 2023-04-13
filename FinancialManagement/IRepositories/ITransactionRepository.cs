@@ -5,6 +5,7 @@ namespace FinancialManagement.IRepositories
 {
     public interface ITransactionRepository
     {
+        Transaction? GetTransaction(int transactionId);
         List<TransactionResource> GetTransactionByPerson(int personId);
         TransactionsByLocationResource GetTransactionsByLocation(int locationId);
         double? GetBalance(int personId);
