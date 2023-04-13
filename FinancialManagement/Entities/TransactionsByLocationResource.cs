@@ -9,6 +9,6 @@ namespace FinancialManagement.Entities
         public string LocationAddress { get; set; } = null!;
         public double LocationLatitude { get; set; }
         public double LocationLongtude { get; set; }
-        public List<Transaction> Transactions { get; set; }
+        public List<TransactionResource> Transactions { get; set; }
     }
 }

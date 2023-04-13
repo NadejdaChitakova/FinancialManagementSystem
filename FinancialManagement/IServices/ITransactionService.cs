@@ -1,6 +1,4 @@
 ﻿using FinancialManagement.Entities;
-using FinancialManagement.Models;
-using Microsoft.AspNetCore.Mvc;
 
 namespace FinancialManagement.Interfaces
 {
