@@ -14,9 +14,9 @@ namespace FinancialManagement.Controllers
 
         [HttpGet]
         [Route("Transactions/GetTransaction")]
-        public async Task<IActionResult> Get([FromHeader] int personId)
+        public async Task<IActionResult> Get()
         {
-            var transactions = await _transactionService.GetTransactions(personId);
+            var transactions = await _transactionService.GetTransactions();
 
             return Ok(transactions);
         }
@@ -29,6 +29,25 @@ namespace FinancialManagement.Controllers
 
             return Ok(transactions);
         }
+
+        [HttpGet]
+        [Route("Transactions/GetTransactionsByBank")]
+        public async Task<IActionResult> GetTransactionsByBank()
+        {
+            var transactions = await _transactionService.GetTransactionsByBank();
+
+            return Ok(transactions);
+        }
+
+        [HttpGet]
+        [Route("Transactions/PersonTransactions")]
+        public async Task<IActionResult> GetPersonTransactions([FromHeader] int personId)
+        {
+            var transaction = await _transactionService.GetTransactionsByPerson(personId);
+
+            return Ok(transaction);
+        }
+
 
         [HttpPost]
         [Route("Transactions/CreateTransaction")]

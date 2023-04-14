@@ -4,6 +4,8 @@ using FinancialManagement.DbManagement;
 using FinancialManagement.Entities;
 using FinancialManagement.IRepositories;
 using FinancialManagement.Models;
+using Microsoft.EntityFrameworkCore;
+using System.Diagnostics;
 
 namespace FinancialManagement.Repository
 {
@@ -18,22 +20,61 @@ namespace FinancialManagement.Repository
             _mapper = mapper;
         }
 
-        public List<TransactionResource> GetTransactionByPerson(int personId)
+        public List<TransactionResource> GetTransactions()
         {
-            var transactions = _dbContext.Transactions.Where(x => x.PersonId.Equals(personId)).ProjectTo<TransactionResource>(_mapper.ConfigurationProvider).ToList();
+            var transactions = _dbContext.Transactions.ProjectTo<TransactionResource>(_mapper.ConfigurationProvider).ToList();
 
             return transactions;
+        }
+
+        public PersonTransactionsResource GetTransactionByPerson(int personId)
+        {
+            var person = _dbContext.People.Where(x => x.PersonId.Equals(personId)).FirstOrDefault();
+
+            if (person == null)
+            {
+                throw new BadHttpRequestException($"Person with {personId} does not exists.");
+            }
+            var mappedResource = _mapper.Map<PersonTransactionsResource>(person);
+
+            mappedResource.Transactions.AddRange(_dbContext.Transactions.Where(x => x.PersonId.Equals(personId)).ProjectTo<TransactionResource>(_mapper.ConfigurationProvider).ToList());
+
+            return mappedResource;
         }
 
         public TransactionsByLocationResource GetTransactionsByLocation(int locationId)
         {
             var location = _dbContext.Locations.Where(x => x.LocationId.Equals(locationId)).FirstOrDefault();
 
+            if (location == null)
+            {
+                throw new BadHttpRequestException($"Location with {locationId} does not exists.");
+            }
+
             var mappedResource = _mapper.Map<TransactionsByLocationResource>(location);
 
             mappedResource.Transactions.AddRange(_dbContext.Transactions.Where(x => x.LocationId.Equals(locationId)).ProjectTo<TransactionResource>(_mapper.ConfigurationProvider));
 
             return mappedResource;
+        }
+
+        public List<TransactionsByBank> GetTransactionByBank()
+        {
+            var transactions = _dbContext.Transactions.Include(x => x.Bank).Select(t => new TransactionsByBank
+            {
+                BankId = t.BankId,
+                BankName = t.Bank.BankName,
+                BankAddress = t.Bank.BankAddress,
+                BankPhone = t.Bank.BankPhone,
+                LocationId = t.LocationId,
+                CategoryId = t.CategoryId,
+                PersonId = t.PersonId,
+                TransactionAmount = t.TransactionAmount,
+                TransactionDate = t.TransactionDate,
+                TransactionId = t.TransactionId,
+                TransactionType = t.TransactionType
+            });
+            return transactions.ToList();
         }
 
         public double? GetBalance(int personId)

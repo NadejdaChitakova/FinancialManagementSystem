@@ -17,13 +17,17 @@ namespace FinancialManagement.Service
             _transactionRepository = transactionRepository;
         }
 
-        public async Task<List<TransactionResource>> GetTransactions(int personId)
+        public async Task<List<TransactionResource>> GetTransactions()
+        {
+            return _transactionRepository.GetTransactions();
+        }
+
+        public async Task<PersonTransactionsResource> GetTransactionsByPerson(int personId)
         {
             if (personId < 0)
             {
                 throw new BadHttpRequestException("Incorrect data format.");
             }
-
             return _transactionRepository.GetTransactionByPerson(personId);
         }
 
@@ -59,6 +63,11 @@ namespace FinancialManagement.Service
             var transaction = _mapper.Map<Transaction>(transactionResource);
 
             await _transactionRepository.AddTransactionToDb(transaction);
+        }
+
+        public async Task<List<TransactionsByBank>> GetTransactionsByBank()
+        {
+            return _transactionRepository.GetTransactionByBank();
         }
 
         public async Task UpdateTransaction(TransactionRequestResource transactionResource)

@@ -6,8 +6,10 @@ namespace FinancialManagement.IRepositories
     public interface ITransactionRepository
     {
         Transaction? GetTransaction(int transactionId);
-        List<TransactionResource> GetTransactionByPerson(int personId);
+        List<TransactionResource> GetTransactions();
+        PersonTransactionsResource GetTransactionByPerson(int personId);
         TransactionsByLocationResource GetTransactionsByLocation(int locationId);
+        List<TransactionsByBank> GetTransactionByBank();
         double? GetBalance(int personId);
         Task AddTransactionToDb(Transaction transaction);
         Task UpdateTransactionToDb(Transaction transaction);

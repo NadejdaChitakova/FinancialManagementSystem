@@ -20,6 +20,9 @@ namespace FinancialManagement.AutoMapper
 
             CreateMap<Account, AccountResource>();
             CreateMap<AccountResource, Account>();
+
+            CreateMap<PersonTransactionsResource, Person>();
+            CreateMap<Person, PersonTransactionsResource>();
         }
     }
 }
