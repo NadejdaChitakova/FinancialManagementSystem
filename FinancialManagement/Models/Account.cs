@@ -1,5 +1,4 @@
-﻿
-namespace FinancialManagement.Models
+﻿namespace FinancialManagement.Models
 {
     public partial class Account
     {

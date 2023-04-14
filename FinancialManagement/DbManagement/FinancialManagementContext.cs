@@ -174,10 +174,7 @@ namespace FinancialManagement.DbManagement
                     .HasColumnType("datetime")
                     .HasColumnName("TRANSACTION_DATE");
 
-                entity.Property(e => e.TransactionType)
-                    .HasMaxLength(150)
-                    .IsUnicode(false)
-                    .HasColumnName("TRANSACTION_TYPE");
+                entity.Property(e => e.TransactionType).HasColumnName("TRANSACTION_TYPE");
 
                 entity.HasOne(d => d.Bank)
                     .WithMany(p => p.Transactions)
@@ -202,6 +199,31 @@ namespace FinancialManagement.DbManagement
                     .HasForeignKey(d => d.PersonId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK__TRANSACTI__PERSO__5070F446");
+
+                entity.HasOne(d => d.TransactionTypeNavigation)
+                    .WithMany(p => p.Transactions)
+                    .HasForeignKey(d => d.TransactionType)
+                    .HasConstraintName("TYPE_TRANSACTION_CONSTRAINT");
+            });
+
+            modelBuilder.Entity<TransactionType>(entity =>
+            {
+                entity.HasKey(e => e.TypeId)
+                    .HasName("PK__TRANSACT__41F99A5202A66F30");
+
+                entity.ToTable("TRANSACTION_TYPE");
+
+                entity.Property(e => e.TypeId).HasColumnName("TYPE_ID");
+
+                entity.Property(e => e.Description)
+                    .HasMaxLength(500)
+                    .IsUnicode(false)
+                    .HasColumnName("DESCRIPTION");
+
+                entity.Property(e => e.Name)
+                    .HasMaxLength(150)
+                    .IsUnicode(false)
+                    .HasColumnName("NAME");
             });
 
             OnModelCreatingPartial(modelBuilder);

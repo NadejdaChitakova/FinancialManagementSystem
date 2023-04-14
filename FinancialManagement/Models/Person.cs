@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace FinancialManagement.Models
+﻿namespace FinancialManagement.Models
 {
     public partial class Person
     {
