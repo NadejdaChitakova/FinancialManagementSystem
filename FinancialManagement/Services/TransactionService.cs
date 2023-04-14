@@ -70,6 +70,21 @@ namespace FinancialManagement.Service
             return _transactionRepository.GetTransactionByBank();
         }
 
+        public async Task<List<TransactionResource>> GetTransactionsByDate(DateTime fromDate, DateTime toDate)
+        {
+            if (fromDate > toDate)
+            {
+                throw new BadHttpRequestException("Incorrect data format.");
+            }
+
+            return _transactionRepository.GetTransactionsByDate(fromDate, toDate);
+        }
+
+        public async Task<List<TransactionsByCategory>> GetTransactionsByCategories()
+        {
+            return _transactionRepository.GetTransactionsByCategories();
+        }
+
         public async Task UpdateTransaction(TransactionRequestResource transactionResource)
         {
             if (transactionResource.PersonId < 0 || transactionResource.TransactionAmount < 0)

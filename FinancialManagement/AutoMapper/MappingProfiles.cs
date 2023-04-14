@@ -17,6 +17,8 @@ namespace FinancialManagement.AutoMapper
                 );
             CreateMap<TransactionsByLocationResource, Location>();
             CreateMap<Location, TransactionsByLocationResource>();
+            CreateMap<TransactionsByCategory, Category>();
+            CreateMap<Category, TransactionsByCategory > ();
 
             CreateMap<Account, AccountResource>();
             CreateMap<AccountResource, Account>();

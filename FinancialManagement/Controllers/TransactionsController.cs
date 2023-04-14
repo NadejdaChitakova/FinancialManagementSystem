@@ -48,6 +48,21 @@ namespace FinancialManagement.Controllers
             return Ok(transaction);
         }
 
+        [HttpGet]
+        [Route("Transactions/TransactionsHistory")]
+        public async Task<IActionResult> GetTransactionsByDate([FromHeader] DateTime fromDate, DateTime toDate)
+        {
+            var transactions = await _transactionService.GetTransactionsByDate(fromDate, toDate);
+            return Ok(transactions);
+        }
+
+        [HttpGet]
+        [Route("Transactions/TransactionsByCategory")]
+        public async Task<IActionResult> GetTransactionsByCategory()
+        {
+            var transactionByCategory = _transactionService.GetTransactionsByCategories();
+            return Ok(transactionByCategory);
+        }
 
         [HttpPost]
         [Route("Transactions/CreateTransaction")]

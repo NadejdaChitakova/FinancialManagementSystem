@@ -83,6 +83,19 @@ namespace FinancialManagement.Repository
             return balance;
         }
 
+        public List<TransactionResource> GetTransactionsByDate(DateTime fromDate, DateTime toDate)
+        {
+            var transactions = _dbContext.Transactions.Where(x => x.TransactionDate >= fromDate && x.TransactionDate <= toDate).ProjectTo<TransactionResource>(_mapper.ConfigurationProvider).ToList();
+
+            return transactions;
+        }
+
+        public List<TransactionsByCategory> GetTransactionsByCategories()
+        {
+            var transactions = _dbContext.Categories.ProjectTo<TransactionsByCategory>(_mapper.ConfigurationProvider).ToList();
+            return transactions;
+        }
+
         public async Task AddTransactionToDb(Transaction transaction)
         {
             await _dbContext.Transactions.AddAsync(transaction);
