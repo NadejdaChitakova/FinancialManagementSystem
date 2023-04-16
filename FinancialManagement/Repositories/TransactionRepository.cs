@@ -72,7 +72,7 @@ namespace FinancialManagement.Repository
                 TransactionAmount = t.TransactionAmount,
                 TransactionDate = t.TransactionDate,
                 TransactionId = t.TransactionId,
-                TransactionType = t.TransactionType
+                TransactionType = (int)t.TransactionType
             });
             return transactions.ToList();
         }
@@ -93,6 +93,12 @@ namespace FinancialManagement.Repository
         public List<TransactionsByCategory> GetTransactionsByCategories()
         {
             var transactions = _dbContext.Categories.ProjectTo<TransactionsByCategory>(_mapper.ConfigurationProvider).ToList();
+            return transactions;
+        }
+
+        public List<TransactionResource> GetTransactionsByType(int typeId)
+        {
+            var transactions = _dbContext.Transactions.Where(x => x.TransactionType.Equals(typeId)).ProjectTo<TransactionResource>(_mapper.ConfigurationProvider).ToList();
             return transactions;
         }
 

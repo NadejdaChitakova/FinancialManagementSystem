@@ -64,6 +64,14 @@ namespace FinancialManagement.Controllers
             return Ok(transactionByCategory);
         }
 
+        [HttpGet]
+        [Route("Transactions/TransactionsByType")]
+        public async Task<IActionResult> GetTransactionsByType([FromHeader] int typeId)
+        {
+            var transactions = _transactionService.GetTransactionsByType(typeId);
+            return Ok(transactions);
+        }
+
         [HttpPost]
         [Route("Transactions/CreateTransaction")]
         public async Task<IActionResult> PostTransaction([FromBody] TransactionRequestResource request)

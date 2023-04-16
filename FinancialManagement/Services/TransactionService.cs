@@ -85,6 +85,18 @@ namespace FinancialManagement.Service
             return _transactionRepository.GetTransactionsByCategories();
         }
 
+        public async Task<List<TransactionResource>> GetTransactionsByType(int typeId)
+        {
+            var transactions = _transactionRepository.GetTransactionsByType(typeId);
+
+            if (!transactions.Any())
+            {
+                throw new BadHttpRequestException($"Missing data for type with id {typeId}");
+            }
+
+            return transactions;
+        }
+
         public async Task UpdateTransaction(TransactionRequestResource transactionResource)
         {
             if (transactionResource.PersonId < 0 || transactionResource.TransactionAmount < 0)

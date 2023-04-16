@@ -11,6 +11,7 @@ namespace FinancialManagement.Interfaces
         Task<List<TransactionsByBank>> GetTransactionsByBank();
         Task<List<TransactionResource>> GetTransactionsByDate(DateTime fromDate, DateTime toDate);
         Task<List<TransactionsByCategory>> GetTransactionsByCategories();
+        Task<List<TransactionResource>> GetTransactionsByType(int typeId);
         Task CreateTransaction(TransactionRequestResource transactionResource);
         Task UpdateTransaction(TransactionRequestResource transactionResource);
         Task DeleteTransaction(int transactionId);

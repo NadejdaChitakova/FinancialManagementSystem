@@ -12,6 +12,7 @@ namespace FinancialManagement.IRepositories
         List<TransactionsByBank> GetTransactionByBank();
         List<TransactionResource> GetTransactionsByDate(DateTime fromDate, DateTime toDate);
         List<TransactionsByCategory> GetTransactionsByCategories();
+        List<TransactionResource> GetTransactionsByType(int typeId);
         double? GetBalance(int personId);
         Task AddTransactionToDb(Transaction transaction);
         Task UpdateTransactionToDb(Transaction transaction);
