@@ -5,7 +5,6 @@ using FinancialManagement.Entities;
 using FinancialManagement.IRepositories;
 using FinancialManagement.Models;
 using Microsoft.EntityFrameworkCore;
-using System.Diagnostics;
 
 namespace FinancialManagement.Repository
 {
@@ -99,6 +98,25 @@ namespace FinancialManagement.Repository
         public List<TransactionResource> GetTransactionsByType(int typeId)
         {
             var transactions = _dbContext.Transactions.Where(x => x.TransactionType.Equals(typeId)).ProjectTo<TransactionResource>(_mapper.ConfigurationProvider).ToList();
+            return transactions;
+        }
+
+        public List<MonthlyTransactionSummary> GetMonthlyTransactions(int month)
+        {
+            var transactions = _dbContext.Transactions
+                                                      .Include(c => c.Category)
+                                                      .Include(b => b.Bank)
+                                                      .Where(x => x.TransactionDate.Month.Equals(month))
+                                                      .GroupBy(cb => new { cb.Category.CategoryName, cb.Bank.BankName })
+                                                      .Select(result => new MonthlyTransactionSummary
+                                                      {
+                                                          CategoryName = result.Key.CategoryName,
+                                                          BankName = result.Key.BankName,
+                                                          TotalTransactions = result.Count(),
+                                                          TotalAmount = result.Sum(t => t.TransactionAmount)
+                                                      })
+                                                      .ToList();
+
             return transactions;
         }
 

@@ -79,6 +79,14 @@ namespace FinancialManagement.Controllers
             return Ok(transactions);
         }
 
+        [HttpGet]
+        [Route("Transactions/MonthlyTransactionSummary")]
+        public async Task<IActionResult> MonthlyTransactionSummary([FromHeader] int month)
+        {
+            var transactions = _transactionService.GetMonthlyTransactionSummary(month);
+            return Ok(transactions);
+        }
+
         [HttpPost]
         [Route("Transactions/CreateTransaction")]
         public async Task<IActionResult> PostTransaction([FromBody] TransactionRequestResource request)
