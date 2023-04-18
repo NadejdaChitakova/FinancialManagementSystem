@@ -1,11 +1,13 @@
 ﻿using FinancialManagement.Entities;
 using FinancialManagement.Models;
+using Microsoft.AspNetCore.Mvc;
 
 namespace FinancialManagement.Interfaces
 {
     public interface ITransactionService
     {
         Task<List<TransactionResource>> GetTransactions();
+        Task ExportTransactionsToPdf();
         Task<PersonTransactionsResource> GetTransactionsByPerson(int personId);
         Task<TransactionsByLocationResource> GetTransactionsByLocation(int locationId);
         Task<List<TransactionsByBank>> GetTransactionsByBank();

@@ -22,6 +22,13 @@ namespace FinancialManagement.Controllers
         }
 
         [HttpGet]
+        [Route("Transactions/GetPDFTransactions")]
+        public async Task ExportTransactionsToPdf()
+        {
+            var pdf = _transactionService.ExportTransactionsToPdf();
+        }
+
+        [HttpGet]
         [Route("Transactions/GetTransactionsByLocation")]
         public async Task<IActionResult> GetTransactionsByLocation([FromHeader] int locationId)
         {

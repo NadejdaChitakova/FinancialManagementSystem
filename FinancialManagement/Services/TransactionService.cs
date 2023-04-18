@@ -3,6 +3,11 @@ using FinancialManagement.Entities;
 using FinancialManagement.Interfaces;
 using FinancialManagement.IRepositories;
 using FinancialManagement.Models;
+using Microsoft.AspNetCore.Mvc;
+using System.Runtime.Serialization.Json;
+using System.Text;
+using IronPdf;
+using iTextSharp.text.pdf.qrcode;
 
 namespace FinancialManagement.Service
 {
@@ -20,6 +25,17 @@ namespace FinancialManagement.Service
         public async Task<List<TransactionResource>> GetTransactions()
         {
             return _transactionRepository.GetTransactions();
+        }
+
+        public async Task ExportTransactionsToPdf()
+        {
+            var transaction = _transactionRepository.GetTransactions();
+
+            string data = Encoding.ASCII.GetString(ObjectToByteArray(transaction));
+            string HTML = $"{data}";
+            var Renderer = new IronPdf.ChromePdfRenderer();
+            using var PDF = Renderer.RenderHtmlAsPdf(HTML);
+            PDF.SaveAs(DateTime.Now.ToString() + ".pdf");
         }
 
         public async Task<PersonTransactionsResource> GetTransactionsByPerson(int personId)
@@ -124,6 +140,18 @@ namespace FinancialManagement.Service
             }
 
             await _transactionRepository.DeleteTransactionToDb(transaction);
+        }
+        private byte[] ObjectToByteArray(Object obj)
+        {
+            var serializer = new DataContractJsonSerializer(obj.GetType());
+            var stream = new MemoryStream();
+
+            // Serialize the object to the stream
+            serializer.WriteObject(stream, obj);
+
+            // Get the byte array from the stream and return it
+            return stream.ToArray();
+
         }
     }
 }
