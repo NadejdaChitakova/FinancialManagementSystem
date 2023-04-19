@@ -34,7 +34,7 @@ namespace FinancialManagement.Controllers
 
         [HttpPut]
         [Route("Accounts/UpdateAccount")]
-        public async Task<IActionResult> UpdateTransaction([FromBody] AccountResource request)
+        public async Task<IActionResult> UpdateAccount([FromBody] AccountUpdateResource request)
         {
             await _accountService.UpdateAccount(request);
 

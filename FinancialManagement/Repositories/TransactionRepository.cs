@@ -72,8 +72,9 @@ namespace FinancialManagement.Repository
                 TransactionDate = t.TransactionDate,
                 TransactionId = t.TransactionId,
                 TransactionType = (int)t.TransactionType
-            });
-            return transactions.ToList();
+            }).ToList();
+
+            return transactions;
         }
 
         public double? GetBalance(int personId)
@@ -117,6 +118,24 @@ namespace FinancialManagement.Repository
                                                       })
                                                       .ToList();
 
+            return transactions;
+        }
+
+        public List<TransactionPredication> GetTransactionPredication()
+        {
+            var transactions = _dbContext.Transactions
+                                                      .Include(p => p.Person)
+                                                      .Include(l => l.Location)
+                                                      .Include(b => b.Bank)
+                                                      .Select(result => new TransactionPredication
+                                                      {
+                                                          PersonId = result.PersonId,
+                                                          FirstName = result.Person.Firstname,
+                                                          LastName = result.Person.Lastname,
+                                                          Location = result.Location.LocationName,
+                                                          BankName = result.Bank.BankName
+                                                      })
+                                                      .ToList();
             return transactions;
         }
 

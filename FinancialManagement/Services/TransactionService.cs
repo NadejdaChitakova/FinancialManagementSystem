@@ -120,10 +120,15 @@ namespace FinancialManagement.Service
                 throw new BadHttpRequestException($"Invalid month.");
             }
 
-            return _transactionRepository.GetMonthlyTransactions(4);
+            return _transactionRepository.GetMonthlyTransactions(month);
         }
 
-        public async Task UpdateTransaction(TransactionRequestResource transactionResource)
+        public async Task<List<TransactionPredication>> GetTransactionsPrediction()
+        {
+            return _transactionRepository.GetTransactionPredication();
+        }
+
+        public async Task UpdateTransaction(TransactionUpdateRequestResource transactionResource)
         {
             if (transactionResource.PersonId < 0 || transactionResource.TransactionAmount < 0)
             {

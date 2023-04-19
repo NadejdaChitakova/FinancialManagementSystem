@@ -15,8 +15,9 @@ namespace FinancialManagement.Interfaces
         Task<List<TransactionsByCategory>> GetTransactionsByCategories();
         Task<List<TransactionResource>> GetTransactionsByType(int typeId);
         Task<List<MonthlyTransactionSummary>> GetMonthlyTransactionSummary(int month);
+        Task<List<TransactionPredication>> GetTransactionsPrediction();
         Task CreateTransaction(TransactionRequestResource transactionResource);
-        Task UpdateTransaction(TransactionRequestResource transactionResource);
+        Task UpdateTransaction(TransactionUpdateRequestResource transactionResource);
         Task DeleteTransaction(int transactionId);
     }
 }

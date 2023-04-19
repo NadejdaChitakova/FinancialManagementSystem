@@ -39,9 +39,9 @@ namespace FinancialManagement.Services
             await _accountRepository.CreateAccountInDb(account);
         }
 
-        public async Task UpdateAccount(AccountResource request)
+        public async Task UpdateAccount(AccountUpdateResource request)
         {
-            if (request.PersonId < 0 || request.Balance < 0)
+            if (request.AccountId < 0 || request.Balance < 0)
             {
                 throw new BadHttpRequestException("Incorrect data format.");
             }

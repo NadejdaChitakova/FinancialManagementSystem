@@ -87,6 +87,14 @@ namespace FinancialManagement.Controllers
             return Ok(transactions);
         }
 
+        [HttpGet]
+        [Route("Transactions/TransactionsPrediction")]
+        public async Task<IActionResult> TransactionsPrediction()
+        {
+            var transactions = _transactionService.GetTransactionsPrediction();
+            return Ok(transactions);
+        }
+
         [HttpPost]
         [Route("Transactions/CreateTransaction")]
         public async Task<IActionResult> PostTransaction([FromBody] TransactionRequestResource request)
@@ -98,7 +106,7 @@ namespace FinancialManagement.Controllers
 
         [HttpPut]
         [Route("Transactions/UpdateTransaction")]
-        public async Task<IActionResult> UpdateTransaction([FromBody] TransactionRequestResource request)
+        public async Task<IActionResult> UpdateTransaction([FromBody] TransactionUpdateRequestResource request)
         {
             await _transactionService.UpdateTransaction(request);
 

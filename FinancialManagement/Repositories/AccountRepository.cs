@@ -35,8 +35,7 @@ namespace FinancialManagement.Repository
 
         public async Task UpdateAccountInDb(Account account)
         {
-            account.AccountId = GetAccountId(account.Iban);
-
+            account.PersonId = GetPersonId(account.Iban);
             _financialManagementContext.Accounts.Update(account);
             await _financialManagementContext.SaveChangesAsync();
         }
@@ -47,9 +46,9 @@ namespace FinancialManagement.Repository
             await _financialManagementContext.SaveChangesAsync();
         }
 
-        private int GetAccountId(string ibna)
+        private int GetPersonId(string iban)
         {
-            return _financialManagementContext.Accounts.Where(x => x.Iban.ToLower() == ibna.ToLower()).Select(x => x.AccountId).FirstOrDefault();
+            return _financialManagementContext.Accounts.Where(x => x.Iban.ToLower() == iban.ToLower()).Select(x => x.PersonId).FirstOrDefault();
         }
     }
 }
